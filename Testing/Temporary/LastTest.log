@@ -1,0 +1,23 @@
+Start testing: Apr 21 10:34 CEST
+----------------------------------------------------------
+1/1 Testing: FirstTest
+1/1 Test: FirstTest
+Command: "/home/eduard/programming/PeakFinder/first"
+Directory: /home/eduard/programming/PeakFinder
+"FirstTest" start time: Apr 21 10:34 CEST
+Output:
+----------------------------------------------------------
+Best 	Function Evals      	
+1714.11             	15                  	
+3.98658               10 -0.993263 0.996606 0.998241 0.998988 0.999226 0.999074 0.998454 0.997056 0.994179 0.988393 
+Fitness achieved = 3.98658
+Function evaluations = 10005
+<end of output>
+Test time =   0.30 sec
+----------------------------------------------------------
+Test Passed.
+"FirstTest" end time: Apr 21 10:34 CEST
+"FirstTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Apr 21 10:34 CEST

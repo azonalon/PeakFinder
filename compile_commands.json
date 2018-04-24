@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/eduard/programming/PeakFinder",
+  "command": "clang++   -I/home/eduard/programming/PeakFinder/dep/eo/src -I/home/eduard/programming/PeakFinder/dep/eigen -I/home/eduard/programming/PeakFinder/dep/fft-real  -Wall -Werror -Wno-unused-variable -Wno-overloaded-virtual -g -O0   -o CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o -c /home/eduard/programming/PeakFinder/test/simpleEA.cpp",
+  "file": "/home/eduard/programming/PeakFinder/test/simpleEA.cpp"
+}
+]
