@@ -127,7 +127,7 @@ public:
         params.initialStdevs[s.peaks.size()] = max/2;
 
         // eoEsMutate<Candidate> mutator;
-        // eoEsMutationInit initMutator;
+        //  eoEsMutationInit initMutator;
         eo::CMAState state(params, initialCMAPoint);
         eoCMAInit<eoMinimizingFitness> init(state);
         eoPop<Candidate> pop(params.mu, init);
