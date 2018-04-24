@@ -3,6 +3,11 @@
 
 # ignore all textual files
 *.txt
+Testing/*
+bin/*
+lib/*
+*.cmake
+Makefile
 
 # ignore object and archive files
 *.[oa]

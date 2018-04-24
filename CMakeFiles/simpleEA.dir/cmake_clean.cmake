@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o"
-  "simpleEA.pdb"
-  "simpleEA"
+  "bin/simpleEA.pdb"
+  "bin/simpleEA"
 )
 
 # Per-language clean rules from dependency scanning.
