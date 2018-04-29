@@ -25,7 +25,7 @@ int testRandomSpectrum(int N, std::default_random_engine g)
     std::cout << "Initial error: " << initialError << std::endl;
     auto optimalParameters = s.getPeaksAscending<Eigen::VectorXd>();
     SpectrumGlobalOptimizer opt;
-    opt.optimize(s, initialError, 10);
+    opt.optimize(s, initialError, 100);
     auto finalParameters = s.getPeaksAscending<Eigen::VectorXd>();
     double finalError = s.computePeakError();
     std::cout << "Final Error:        " << finalError << std::endl;
@@ -43,7 +43,15 @@ int testRandomSpectrum(int N, std::default_random_engine g)
 
 int main(int argc, char** argv) {
     std::default_random_engine g;
-    g.seed(48);
-    rng.reseed(42);
+    int seed;
+    if(argc > 1) {
+        std::istringstream(argv[1]) >> seed;
+        std::cout << "Using seed " << seed << std::endl;
+        g.seed(seed);
+        rng.reseed(seed + 1);
+    } else {
+        g.seed(42);
+        rng.reseed(46);
+    }
     testRandomSpectrum(3, g);
 }

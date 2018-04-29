@@ -58,8 +58,9 @@ public:
     SpectrumLocalOptimizer(Spectrum& s) : s(s) {
         // TODO: determine ftol and stuff from actualSpectrum
     };
+
     template<class _arrayType>
-    Result optimize(_arrayType& x, double maxfev) {
+    Result optimize(_arrayType& x, int maxfev) {
         // If you dont have the derivatives in Functor class:
         //      NumericalDiff<LeastSquaresFunctor> numDiff(functor);
         //      LevenbergMarquardt<NumericalDiff<LeastSquaresFunctor>> lm(numDiff);
@@ -69,6 +70,7 @@ public:
         Eigen::LevenbergMarquardt<LeastSquaresFunctor> lm(functor);
         lm.parameters.maxfev=maxfev;
         Eigen::VectorXd xx(x.size());
+        double errTest = s.computePeakError();
         for(int i=0; i< x.size(); i++) {
             xx[i] = x[i];
         }
@@ -79,6 +81,12 @@ public:
         // } while(status == Eigen::LevenbergMarquardtSpace::Running);
         s.setPeaks(xx);
 
-        return Result{lm.nfev, s.computePeakError()};
+        double err = s.computePeakError();
+        if(err == errTest) {
+            fprintf(stderr, "Status: %d\n", status);
+            // throw std::runtime_error("yeah");
+            err = 1e33;
+        }
+        return Result{lm.nfev, err};
     }
 };

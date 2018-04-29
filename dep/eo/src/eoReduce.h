@@ -52,6 +52,7 @@ template<class EOT> class eoReduce: public eoBF<eoPop<EOT>&, unsigned, void>
  */
 template <class EOT> class eoTruncate : public eoReduce<EOT>
 {
+public:
     void operator()(eoPop<EOT>& _newgen, unsigned _newsize)
     {
         if (_newgen.size() == _newsize)
