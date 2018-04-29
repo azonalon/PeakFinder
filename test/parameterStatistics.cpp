@@ -53,11 +53,5 @@ int main(int argc, char** argv) {
         g.seed(42);
         rng.reseed(46);
     }
-    if(argc > 2) {
-        int N;
-        std::istringstream(argv[2]) >> N;
-        testRandomSpectrum(N, g);
-    } else {
-        testRandomSpectrum(3, g);
-    }
+    testRandomSpectrum(3, g);
 }

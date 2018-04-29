@@ -56,7 +56,6 @@ public:
         eval(_eo);
       Fitness oldFitness = _eo.fitness(); // save old fitness
 
-      std::cout << "Mutating " << _eo.fitness() << std::endl;
       // call standard operator - then count the successes
       if (eoNormalMutation<EOT>::operator()(_eo)) // _eo has been modified
         {
@@ -85,14 +84,14 @@ public:
     // update sigma accordingly
     double prop = double(totalSuccess) / totalMut;
     if (prop > threshold) {
-      Sigma() /= updateFactor;     // increase sigma
-      std::cout << "success rate: " << prop << " increase sigma: " << Sigma() << std::endl;
+        Sigma() /= updateFactor;     // increase sigma
+        std::cout << "success rate: " << prop << " increase sigma: " << Sigma() << std::endl;
     }
     else
-      {
+    {
         Sigma() *= updateFactor;           // decrease sigma
-      std::cout << "decrease sigma: " << Sigma() << std::endl;
-      }
+        std::cout << "success rate: " << prop << " decrease sigma: " << Sigma() << std::endl;
+    }
     genIndex = (genIndex+1) % nbMut.size() ;
     nbMut[genIndex] = nbSuccess[genIndex] = 0;
 
@@ -197,10 +196,11 @@ class SpectrumGlobalOptimizer {
         Mutate<Candidate> mutate;
         eoRealVectorBounds bounds;
         double offspringRatio=2;
+        eoEvalFunc<Candidate>& eval;
 
         std::string className() {return "Spectrum Parameter Breeder";}
         void operator()(const eoPop<Candidate>& parents, eoPop<Candidate>& offspring) {
-            std::cout << "breeder called " << parents.size() << " " << offspring.size() << std::endl;
+            // std::cout << "breeder called " << parents.size() << " " << offspring.size() << std::endl;
             std::vector<const Candidate*> parentsPtr(parents.size());
             std::transform(parents.begin(), parents.end(), parentsPtr.begin(),
                             [](auto& x){return &x;});
@@ -211,7 +211,14 @@ class SpectrumGlobalOptimizer {
                     auto p1=parentsPtr[2*i + 0], p2=parentsPtr[2*i + 1];
                     Candidate child = recombine(*p1, *p2);
                     // std::cout << "c value: " << child[child.size()-1] << std::endl;
-                    mutate(child);
+                    eval(child);
+                    if(child.fitness() > p2->fitness() && child.fitness() > p1 ->fitness()) {
+                        printf("Recombination produced something! (%g , %g) -> %g \n",
+                            (double)p1->fitness(), (double)p2->fitness(), (double)child.fitness());
+                    } else {
+                        mutate(child);
+                    }
+                    std::cout << "New candidate " << child.fitness() << std::endl;
                     offspring.push_back(child);
                 }
             }
@@ -219,16 +226,16 @@ class SpectrumGlobalOptimizer {
         }
     public:
         Breed(eoEvalFunc<Candidate>& eval, eoRealVectorBounds& bounds,
-                std::vector<double> initialStdevs, int _offspringRatio):
-            sigma(initialStdevs[0]), mutate(eval, sigma, bounds, 2, 0.83),
-            bounds(bounds), offspringRatio(2*_offspringRatio) {
+                std::vector<double> initialStdevs, int _offspringRatio, int _oneFifthWindow):
+            sigma(initialStdevs[0]), mutate(eval, sigma, bounds, _oneFifthWindow, 0.83),
+            bounds(bounds), offspringRatio(2*_offspringRatio), eval(eval) {
         }
     };
 
 
     class EvaluationFunctor: public eoEvalFunc<Candidate> {
     public:
-        int nLocalIterations = 30;
+        int nLocalIterations = 50;
         SpectrumLocalOptimizer& s;
         eoValueParam<int>& evals;
         EvaluationFunctor(SpectrumLocalOptimizer& s,
@@ -304,7 +311,7 @@ public:
         	eval(pop[i]);
         }
 
-        Breed breed(eval, bounds, initialStdevs, 1);
+        Breed breed(eval, bounds, initialStdevs, 1, 2);
         // eoG3Replacement<Candidate> comma(pop.size());
         Replacement<Candidate> comma;
         eoGenContinue<Candidate> gen(maxGen);
