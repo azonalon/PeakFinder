@@ -207,6 +207,7 @@ class SpectrumGlobalOptimizer {
             for(int j=0; j < offspringRatio; j++) {
                 std::random_shuffle(parentsPtr.begin(), parentsPtr.end(),
                     [](uint32_t n) -> uint32_t {return rng.random(n);});
+
                 for(int i=0; i<parents.size()/2; i++) {
                     auto p1=parentsPtr[2*i + 0], p2=parentsPtr[2*i + 1];
                     Candidate child = recombine(*p1, *p2);

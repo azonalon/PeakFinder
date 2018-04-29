@@ -87,6 +87,12 @@ public:
             // throw std::runtime_error("yeah");
             err = 1e33;
         }
+        // for(int i=0;i < xx.size()/3; i++) {
+        //     if(xx[3*i+2] < 0) {
+        //         err = 1e33;
+        //         return Result{lm.nfev, err};
+        //     }
+        // }
         return Result{lm.nfev, err};
     }
 };

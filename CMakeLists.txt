@@ -16,7 +16,7 @@ endif()
 
 # enable_testing()
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
-include_directories(dep/eo/src dep/eigen dep/fft-real)
+include_directories(dep/eo/src dep/eigen)
 link_directories(dep/eo/lib)
 # add_executable(first test/first.cpp test/first)
 # target_link_libraries(first cma eoutils eo)

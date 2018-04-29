@@ -39,7 +39,7 @@ public:
     }
     inline double computeValueAt(double x) {
         if(type == GAUSSIAN) {
-            return height*exp(-(x-center)*(x-center)*invWidth);
+            return abs(height)*exp(-(x-center)*(x-center)*invWidth);
         } else {
             throw std::runtime_error("the given peak type is not defined");
         }
@@ -48,10 +48,13 @@ public:
     inline Eigen::ArrayXd computeSpectrum(Eigen::ArrayXd x) {
         if(type == GAUSSIAN) {
             auto xx = x-center;
-            return height*Eigen::exp(-(xx*xx)*invWidth);
+            return abs(height)*Eigen::exp(-(xx*xx)*invWidth);
         } else {
             throw std::runtime_error("the given peak type is not defined");
         }
+    }
+    inline double signum(double x) {
+        return x < 0? -1 : 1;
     }
 
     inline void computeJacobian(Eigen::ArrayXd frequencies,
@@ -63,7 +66,8 @@ public:
                 double tmp1 = exp(-xs*invWidth);
                 jac(i, offset+0) = height*tmp1* xx*2*(invWidth);
                 jac(i, offset+1) = height*tmp1*(-xs);
-                jac(i, offset+2) = tmp1;
+                jac(i, offset+2) = tmp1 * signum(height);
+                // signum here because there is an abs around height
             }
         } else {
             throw std::runtime_error("the given peak type is not defined");
@@ -96,9 +100,6 @@ public:
         }
         // fjac.block(0, 3*peaks.size(), frequencies.size(), 1) =
         //     Eigen::VectorXd::Constant(frequencies.size(), 0);
-        std::ofstream f("Testing/jacobian.dat");
-        f << fjac;
-        f.close();
     }
 
     double computePeakError() {

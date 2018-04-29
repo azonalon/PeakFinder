@@ -3,9 +3,11 @@
 
 # ignore all textual files
 *.txt
+*.pdf
 Testing/*
 bin/*
 lib/*
+CMakeFiles/*
 *.cmake
 Makefile
 

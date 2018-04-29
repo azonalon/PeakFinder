@@ -25,7 +25,7 @@ int testRandomSpectrum(int N, std::default_random_engine g)
     std::cout << "Initial error: " << initialError << std::endl;
     auto optimalParameters = s.getPeaksAscending<Eigen::VectorXd>();
     SpectrumGlobalOptimizer opt;
-    opt.optimize(s, initialError, 100);
+    opt.optimize(s, initialError*0.9, 100);
     auto finalParameters = s.getPeaksAscending<Eigen::VectorXd>();
     double finalError = s.computePeakError();
     std::cout << "Final Error:        " << finalError << std::endl;
