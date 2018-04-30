@@ -13,6 +13,8 @@ random
 /home/eduard/programming/PeakFinder/include/Spectrum.hpp
 Eigen/Core
 -
+Eigen/LU
+-
 vector
 -
 utils/eoRNG.h
@@ -93,18 +95,24 @@ fstream
 -
 algorithm
 -
+iomanip
+-
 ../include/SpectrumGlobalOptimizer.hpp
 /home/eduard/programming/PeakFinder/include/SpectrumGlobalOptimizer.hpp
 
 dep/eigen/Eigen/Cholesky
 Core
 dep/eigen/Eigen/Core
+Jacobi
+dep/eigen/Eigen/Jacobi
 src/Core/util/DisableStupidWarnings.h
 dep/eigen/Eigen/src/Core/util/DisableStupidWarnings.h
 src/Cholesky/LLT.h
 dep/eigen/Eigen/src/Cholesky/LLT.h
 src/Cholesky/LDLT.h
 dep/eigen/Eigen/src/Cholesky/LDLT.h
+mkl_lapacke.h
+dep/eigen/Eigen/mkl_lapacke.h
 src/misc/lapacke.h
 dep/eigen/Eigen/src/misc/lapacke.h
 src/Cholesky/LLT_LAPACKE.h
@@ -115,7 +123,7 @@ dep/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h
 dep/eigen/Eigen/Core
 src/Core/util/DisableStupidWarnings.h
 dep/eigen/Eigen/src/Core/util/DisableStupidWarnings.h
-math_functions.hpp
+cuda_runtime.h
 -
 new
 -
@@ -191,6 +199,8 @@ iostream
 -
 intrin.h
 -
+SYCL/sycl.hpp
+-
 src/Core/util/Constants.h
 dep/eigen/Eigen/src/Core/util/Constants.h
 src/Core/util/Meta.h
@@ -203,6 +213,10 @@ src/Core/util/XprHelper.h
 dep/eigen/Eigen/src/Core/util/XprHelper.h
 src/Core/util/Memory.h
 dep/eigen/Eigen/src/Core/util/Memory.h
+src/Core/util/IntegralConstant.h
+dep/eigen/Eigen/src/Core/util/IntegralConstant.h
+src/Core/util/SymbolicIndex.h
+dep/eigen/Eigen/src/Core/util/SymbolicIndex.h
 src/Core/NumTraits.h
 dep/eigen/Eigen/src/Core/NumTraits.h
 src/Core/MathFunctions.h
@@ -211,12 +225,18 @@ src/Core/GenericPacketMath.h
 dep/eigen/Eigen/src/Core/GenericPacketMath.h
 src/Core/MathFunctionsImpl.h
 dep/eigen/Eigen/src/Core/MathFunctionsImpl.h
+src/Core/arch/Default/ConjHelper.h
+dep/eigen/Eigen/src/Core/arch/Default/ConjHelper.h
 src/Core/arch/SSE/PacketMath.h
 dep/eigen/Eigen/src/Core/arch/SSE/PacketMath.h
 src/Core/arch/AVX/PacketMath.h
 dep/eigen/Eigen/src/Core/arch/AVX/PacketMath.h
 src/Core/arch/AVX512/PacketMath.h
 dep/eigen/Eigen/src/Core/arch/AVX512/PacketMath.h
+src/Core/arch/SSE/MathFunctions.h
+dep/eigen/Eigen/src/Core/arch/SSE/MathFunctions.h
+src/Core/arch/AVX/MathFunctions.h
+dep/eigen/Eigen/src/Core/arch/AVX/MathFunctions.h
 src/Core/arch/AVX512/MathFunctions.h
 dep/eigen/Eigen/src/Core/arch/AVX512/MathFunctions.h
 src/Core/arch/SSE/PacketMath.h
@@ -285,6 +305,10 @@ src/Core/functors/AssignmentFunctors.h
 dep/eigen/Eigen/src/Core/functors/AssignmentFunctors.h
 src/Core/arch/CUDA/Complex.h
 dep/eigen/Eigen/src/Core/arch/CUDA/Complex.h
+src/Core/util/IndexedViewHelper.h
+dep/eigen/Eigen/src/Core/util/IndexedViewHelper.h
+src/Core/ArithmeticSequence.h
+dep/eigen/Eigen/src/Core/ArithmeticSequence.h
 src/Core/IO.h
 dep/eigen/Eigen/src/Core/IO.h
 src/Core/DenseCoeffsBase.h
@@ -349,6 +373,8 @@ src/Core/Block.h
 dep/eigen/Eigen/src/Core/Block.h
 src/Core/VectorBlock.h
 dep/eigen/Eigen/src/Core/VectorBlock.h
+src/Core/IndexedView.h
+dep/eigen/Eigen/src/Core/IndexedView.h
 src/Core/Transpose.h
 dep/eigen/Eigen/src/Core/Transpose.h
 src/Core/DiagonalMatrix.h
@@ -480,6 +506,34 @@ dep/eigen/Eigen/src/Jacobi/Jacobi.h
 src/Core/util/ReenableStupidWarnings.h
 dep/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h
 
+dep/eigen/Eigen/LU
+Core
+dep/eigen/Eigen/Core
+src/Core/util/DisableStupidWarnings.h
+dep/eigen/Eigen/src/Core/util/DisableStupidWarnings.h
+src/misc/Kernel.h
+dep/eigen/Eigen/src/misc/Kernel.h
+src/misc/Image.h
+dep/eigen/Eigen/src/misc/Image.h
+src/LU/FullPivLU.h
+dep/eigen/Eigen/src/LU/FullPivLU.h
+src/LU/PartialPivLU.h
+dep/eigen/Eigen/src/LU/PartialPivLU.h
+mkl_lapacke.h
+dep/eigen/Eigen/mkl_lapacke.h
+src/misc/lapacke.h
+dep/eigen/Eigen/src/misc/lapacke.h
+src/LU/PartialPivLU_LAPACKE.h
+dep/eigen/Eigen/src/LU/PartialPivLU_LAPACKE.h
+src/LU/Determinant.h
+dep/eigen/Eigen/src/LU/Determinant.h
+src/LU/InverseImpl.h
+dep/eigen/Eigen/src/LU/InverseImpl.h
+src/LU/arch/Inverse_SSE.h
+dep/eigen/Eigen/src/LU/arch/Inverse_SSE.h
+src/Core/util/ReenableStupidWarnings.h
+dep/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h
+
 dep/eigen/Eigen/QR
 Core
 dep/eigen/Eigen/Core
@@ -499,6 +553,8 @@ src/QR/ColPivHouseholderQR.h
 dep/eigen/Eigen/src/QR/ColPivHouseholderQR.h
 src/QR/CompleteOrthogonalDecomposition.h
 dep/eigen/Eigen/src/QR/CompleteOrthogonalDecomposition.h
+mkl_lapacke.h
+dep/eigen/Eigen/mkl_lapacke.h
 src/misc/lapacke.h
 dep/eigen/Eigen/src/misc/lapacke.h
 src/QR/HouseholderQR_LAPACKE.h
@@ -522,11 +578,11 @@ dep/eigen/Eigen/src/Cholesky/LLT.h
 
 dep/eigen/Eigen/src/Cholesky/LLT_LAPACKE.h
 
+dep/eigen/Eigen/src/Core/ArithmeticSequence.h
+
 dep/eigen/Eigen/src/Core/Array.h
 
 dep/eigen/Eigen/src/Core/ArrayBase.h
-../plugins/CommonCwiseUnaryOps.h
-dep/eigen/Eigen/src/plugins/CommonCwiseUnaryOps.h
 ../plugins/MatrixCwiseUnaryOps.h
 dep/eigen/Eigen/src/plugins/MatrixCwiseUnaryOps.h
 ../plugins/ArrayCwiseUnaryOps.h
@@ -571,8 +627,12 @@ dep/eigen/Eigen/src/Core/CwiseUnaryOp.h
 dep/eigen/Eigen/src/Core/CwiseUnaryView.h
 
 dep/eigen/Eigen/src/Core/DenseBase.h
+../plugins/CommonCwiseUnaryOps.h
+dep/eigen/Eigen/src/plugins/CommonCwiseUnaryOps.h
 ../plugins/BlockMethods.h
 dep/eigen/Eigen/src/plugins/BlockMethods.h
+../plugins/IndexedViewMethods.h
+dep/eigen/Eigen/src/plugins/IndexedViewMethods.h
 
 dep/eigen/Eigen/src/Core/DenseCoeffsBase.h
 
@@ -598,6 +658,8 @@ dep/eigen/Eigen/src/Core/GlobalFunctions.h
 
 dep/eigen/Eigen/src/Core/IO.h
 
+dep/eigen/Eigen/src/Core/IndexedView.h
+
 dep/eigen/Eigen/src/Core/Inverse.h
 
 dep/eigen/Eigen/src/Core/Map.h
@@ -611,8 +673,6 @@ dep/eigen/Eigen/src/Core/MathFunctionsImpl.h
 dep/eigen/Eigen/src/Core/Matrix.h
 
 dep/eigen/Eigen/src/Core/MatrixBase.h
-../plugins/CommonCwiseUnaryOps.h
-dep/eigen/Eigen/src/plugins/CommonCwiseUnaryOps.h
 ../plugins/CommonCwiseBinaryOps.h
 dep/eigen/Eigen/src/plugins/CommonCwiseBinaryOps.h
 ../plugins/MatrixCwiseUnaryOps.h
@@ -706,6 +766,8 @@ dep/eigen/Eigen/src/Core/arch/CUDA/PacketMathHalf.h
 
 dep/eigen/Eigen/src/Core/arch/CUDA/TypeCasting.h
 
+dep/eigen/Eigen/src/Core/arch/Default/ConjHelper.h
+
 dep/eigen/Eigen/src/Core/arch/Default/Settings.h
 
 dep/eigen/Eigen/src/Core/arch/NEON/Complex.h
@@ -792,6 +854,10 @@ dep/eigen/Eigen/src/Core/util/DisableStupidWarnings.h
 
 dep/eigen/Eigen/src/Core/util/ForwardDeclarations.h
 
+dep/eigen/Eigen/src/Core/util/IndexedViewHelper.h
+
+dep/eigen/Eigen/src/Core/util/IntegralConstant.h
+
 dep/eigen/Eigen/src/Core/util/MKL_support.h
 mkl.h
 -
@@ -818,6 +884,8 @@ dep/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h
 
 dep/eigen/Eigen/src/Core/util/StaticAssert.h
 
+dep/eigen/Eigen/src/Core/util/SymbolicIndex.h
+
 dep/eigen/Eigen/src/Core/util/XprHelper.h
 
 dep/eigen/Eigen/src/Householder/BlockHouseholder.h
@@ -827,6 +895,18 @@ dep/eigen/Eigen/src/Householder/Householder.h
 dep/eigen/Eigen/src/Householder/HouseholderSequence.h
 
 dep/eigen/Eigen/src/Jacobi/Jacobi.h
+
+dep/eigen/Eigen/src/LU/Determinant.h
+
+dep/eigen/Eigen/src/LU/FullPivLU.h
+
+dep/eigen/Eigen/src/LU/InverseImpl.h
+
+dep/eigen/Eigen/src/LU/PartialPivLU.h
+
+dep/eigen/Eigen/src/LU/PartialPivLU_LAPACKE.h
+
+dep/eigen/Eigen/src/LU/arch/Inverse_SSE.h
 
 dep/eigen/Eigen/src/QR/ColPivHouseholderQR.h
 
@@ -845,6 +925,10 @@ details.h
 dep/eigen/Eigen/src/StlSupport/details.h
 
 dep/eigen/Eigen/src/StlSupport/details.h
+
+dep/eigen/Eigen/src/misc/Image.h
+
+dep/eigen/Eigen/src/misc/Kernel.h
 
 dep/eigen/Eigen/src/misc/blas.h
 
@@ -871,6 +955,10 @@ dep/eigen/Eigen/src/plugins/BlockMethods.h
 dep/eigen/Eigen/src/plugins/CommonCwiseBinaryOps.h
 
 dep/eigen/Eigen/src/plugins/CommonCwiseUnaryOps.h
+
+dep/eigen/Eigen/src/plugins/IndexedViewMethods.h
+IndexedViewMethods.h
+dep/eigen/Eigen/src/plugins/IndexedViewMethods.h
 
 dep/eigen/Eigen/src/plugins/MatrixCwiseBinaryOps.h
 

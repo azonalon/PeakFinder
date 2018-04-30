@@ -1,5 +1,6 @@
 #pragma once
 #include <Eigen/Core>
+#include <Eigen/LU>
 #include <vector>
 #include <utils/eoRNG.h>
 #include <cassert>
@@ -91,6 +92,38 @@ public:
         }
         return s;
     }
+
+    /**
+     * C = inv(J'*J)*MSE
+     * Where MSE is mean-square error:
+     *
+     * MSE = (R'*R)/(N-p)
+     * @return [description]
+     */
+    Eigen::MatrixXd covarianceMatrix() {
+        Eigen::MatrixXd jac(frequencies.size(), parameterCount());
+        computeJacobian(jac);
+        return (jac.transpose()*jac).inverse()*computePeakError()/
+            double(frequencies.size() - parameterCount());
+    }
+    Eigen::VectorXd getParameterErrorsAscending() {
+        auto errors = Eigen::sqrt(covarianceMatrix().diagonal().array());
+        std::vector<int> perm(peaks.size());
+        std::iota(perm.begin(), perm.end(), 0);
+        std::sort(perm.begin(), perm.end(), [&](int p1, int p2) -> bool {
+            return peaks[p1].getCenter() > peaks[p2].getCenter();
+        });
+        Eigen::VectorXd errs(errors.size());
+        for(int i=0; i<perm.size(); i++) {
+            int j = perm[i];
+            errs[3*i+0] = (errors(3*j+0));
+            errs[3*i+1] = (errors(3*j+1));
+            errs[3*i+2] = (errors(3*j+2));
+        }
+        errs[errs.size()-1] = errors(errors.size()-1);
+        return errs;
+    }
+
     void computeJacobian(Eigen::MatrixXd& fjac) {
         for(int i=0; i<peaks.size(); i++) {
             peaks[i].computeJacobian(frequencies, fjac, 3*i);
@@ -105,6 +138,11 @@ public:
     double computePeakError() {
         Eigen::ArrayXd s = computePeakSpectrum() - actualSpectrum;
         double e = (s*s).sum();
+        return e;
+    }
+    double computeStandardDeviation() {
+        Eigen::ArrayXd s = computePeakSpectrum() - actualSpectrum;
+        double e = sqrt((s*s).sum())/sqrt(frequencies.size());
         return e;
     }
 

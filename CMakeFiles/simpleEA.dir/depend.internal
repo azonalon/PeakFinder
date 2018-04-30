@@ -11,11 +11,13 @@ CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o
  dep/eigen/Eigen/Core
  dep/eigen/Eigen/Householder
  dep/eigen/Eigen/Jacobi
+ dep/eigen/Eigen/LU
  dep/eigen/Eigen/QR
  dep/eigen/Eigen/StdVector
  dep/eigen/Eigen/src/Cholesky/LDLT.h
  dep/eigen/Eigen/src/Cholesky/LLT.h
  dep/eigen/Eigen/src/Cholesky/LLT_LAPACKE.h
+ dep/eigen/Eigen/src/Core/ArithmeticSequence.h
  dep/eigen/Eigen/src/Core/Array.h
  dep/eigen/Eigen/src/Core/ArrayBase.h
  dep/eigen/Eigen/src/Core/ArrayWrapper.h
@@ -47,6 +49,7 @@ CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o
  dep/eigen/Eigen/src/Core/GenericPacketMath.h
  dep/eigen/Eigen/src/Core/GlobalFunctions.h
  dep/eigen/Eigen/src/Core/IO.h
+ dep/eigen/Eigen/src/Core/IndexedView.h
  dep/eigen/Eigen/src/Core/Inverse.h
  dep/eigen/Eigen/src/Core/Map.h
  dep/eigen/Eigen/src/Core/MapBase.h
@@ -97,6 +100,7 @@ CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o
  dep/eigen/Eigen/src/Core/arch/CUDA/PacketMath.h
  dep/eigen/Eigen/src/Core/arch/CUDA/PacketMathHalf.h
  dep/eigen/Eigen/src/Core/arch/CUDA/TypeCasting.h
+ dep/eigen/Eigen/src/Core/arch/Default/ConjHelper.h
  dep/eigen/Eigen/src/Core/arch/Default/Settings.h
  dep/eigen/Eigen/src/Core/arch/NEON/Complex.h
  dep/eigen/Eigen/src/Core/arch/NEON/MathFunctions.h
@@ -139,17 +143,26 @@ CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o
  dep/eigen/Eigen/src/Core/util/Constants.h
  dep/eigen/Eigen/src/Core/util/DisableStupidWarnings.h
  dep/eigen/Eigen/src/Core/util/ForwardDeclarations.h
+ dep/eigen/Eigen/src/Core/util/IndexedViewHelper.h
+ dep/eigen/Eigen/src/Core/util/IntegralConstant.h
  dep/eigen/Eigen/src/Core/util/MKL_support.h
  dep/eigen/Eigen/src/Core/util/Macros.h
  dep/eigen/Eigen/src/Core/util/Memory.h
  dep/eigen/Eigen/src/Core/util/Meta.h
  dep/eigen/Eigen/src/Core/util/ReenableStupidWarnings.h
  dep/eigen/Eigen/src/Core/util/StaticAssert.h
+ dep/eigen/Eigen/src/Core/util/SymbolicIndex.h
  dep/eigen/Eigen/src/Core/util/XprHelper.h
  dep/eigen/Eigen/src/Householder/BlockHouseholder.h
  dep/eigen/Eigen/src/Householder/Householder.h
  dep/eigen/Eigen/src/Householder/HouseholderSequence.h
  dep/eigen/Eigen/src/Jacobi/Jacobi.h
+ dep/eigen/Eigen/src/LU/Determinant.h
+ dep/eigen/Eigen/src/LU/FullPivLU.h
+ dep/eigen/Eigen/src/LU/InverseImpl.h
+ dep/eigen/Eigen/src/LU/PartialPivLU.h
+ dep/eigen/Eigen/src/LU/PartialPivLU_LAPACKE.h
+ dep/eigen/Eigen/src/LU/arch/Inverse_SSE.h
  dep/eigen/Eigen/src/QR/ColPivHouseholderQR.h
  dep/eigen/Eigen/src/QR/ColPivHouseholderQR_LAPACKE.h
  dep/eigen/Eigen/src/QR/CompleteOrthogonalDecomposition.h
@@ -158,6 +171,8 @@ CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o
  dep/eigen/Eigen/src/QR/HouseholderQR_LAPACKE.h
  dep/eigen/Eigen/src/StlSupport/StdVector.h
  dep/eigen/Eigen/src/StlSupport/details.h
+ dep/eigen/Eigen/src/misc/Image.h
+ dep/eigen/Eigen/src/misc/Kernel.h
  dep/eigen/Eigen/src/misc/blas.h
  dep/eigen/Eigen/src/misc/lapacke.h
  dep/eigen/Eigen/src/misc/lapacke_mangling.h
@@ -166,6 +181,7 @@ CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o
  dep/eigen/Eigen/src/plugins/BlockMethods.h
  dep/eigen/Eigen/src/plugins/CommonCwiseBinaryOps.h
  dep/eigen/Eigen/src/plugins/CommonCwiseUnaryOps.h
+ dep/eigen/Eigen/src/plugins/IndexedViewMethods.h
  dep/eigen/Eigen/src/plugins/MatrixCwiseBinaryOps.h
  dep/eigen/Eigen/src/plugins/MatrixCwiseUnaryOps.h
  dep/eigen/unsupported/Eigen/NonLinearOptimization

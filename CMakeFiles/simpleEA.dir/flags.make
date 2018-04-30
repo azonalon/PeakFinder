@@ -6,5 +6,5 @@ CXX_FLAGS = -Wall -Werror -Wno-unused-variable -Wno-overloaded-virtual -std=c++1
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/eduard/programming/PeakFinder/dep/eo/src -I/home/eduard/programming/PeakFinder/dep/eigen -I/home/eduard/programming/PeakFinder/dep/fft-real 
+CXX_INCLUDES = -I/home/eduard/programming/PeakFinder/dep/eo/src -I/home/eduard/programming/PeakFinder/dep/eigen 
 

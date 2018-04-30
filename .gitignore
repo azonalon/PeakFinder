@@ -8,6 +8,7 @@ Testing/*
 bin/*
 lib/*
 CMakeFiles/*
+compile_co
 *.cmake
 Makefile
 

@@ -85,12 +85,12 @@ public:
     double prop = double(totalSuccess) / totalMut;
     if (prop > threshold) {
         Sigma() /= updateFactor;     // increase sigma
-        std::cout << "success rate: " << prop << " increase sigma: " << Sigma() << std::endl;
+        // std::cout << "success rate: " << prop << " increase sigma: " << Sigma() << std::endl;
     }
     else
     {
         Sigma() *= updateFactor;           // decrease sigma
-        std::cout << "success rate: " << prop << " decrease sigma: " << Sigma() << std::endl;
+        // std::cout << "success rate: " << prop << " decrease sigma: " << Sigma() << std::endl;
     }
     genIndex = (genIndex+1) % nbMut.size() ;
     nbMut[genIndex] = nbSuccess[genIndex] = 0;
@@ -166,6 +166,10 @@ class Replacement : public eoReplacement<EOT>
 };
 
 class SpectrumGlobalOptimizer {
+    enum Status {
+        MAX_EVAL,
+        SUCCESS
+    };
     // typedef eoReal<eoMinimizingFitness> Candidate;
     eoValueParam<int> evals;
     int mu=10;
@@ -214,12 +218,12 @@ class SpectrumGlobalOptimizer {
                     // std::cout << "c value: " << child[child.size()-1] << std::endl;
                     eval(child);
                     if(child.fitness() > p2->fitness() && child.fitness() > p1 ->fitness()) {
-                        printf("Recombination produced something! (%g , %g) -> %g \n",
-                            (double)p1->fitness(), (double)p2->fitness(), (double)child.fitness());
+                        // printf("Recombination produced something! (%g , %g) -> %g \n",
+                            // (double)p1->fitness(), (double)p2->fitness(), (double)child.fitness());
                     } else {
                         mutate(child);
                     }
-                    std::cout << "New candidate " << child.fitness() << std::endl;
+                    // std::cout << "New candidate " << child.fitness() << std::endl;
                     offspring.push_back(child);
                 }
             }
@@ -256,7 +260,7 @@ public:
     SpectrumGlobalOptimizer():
         evals(0,"Function Evals","Number of Evaluations") {};
 
-    void optimize(Spectrum& s, double tolerance, int maxGen) {
+    Status optimize(Spectrum& s, double stdev, int maxfev) {
 
         double f1=s.frequencies[0], f2=s.frequencies[s.frequencies.size()-1];
         double fRange = abs(f1-f2);
@@ -264,11 +268,11 @@ public:
 
         SpectrumLocalOptimizer opt(s);
 
-        // CONFIGURE CMA-ES SETTINGS
-        char* tmp = new char[1] {'\0'};
-        char** x = &tmp;
-        eoParser parser(0, &tmp);
-        delete[] tmp;
+        // // CONFIGURE CMA-ES SETTINGS
+        // char* tmp = new char[1] {'\0'};
+        // char** x = &tmp;
+        // eoParser parser(0, &tmp);
+        // delete[] tmp;
 
         int nParameters = s.parameterCount();
         std::vector<double> initialParameters(nParameters);
@@ -305,7 +309,7 @@ public:
         eoRealVectorBounds bounds(lowerBounds, upperBounds);
         eoRealInitBounded<Candidate> initPopulation(bounds);
         eoPop<Candidate> pop(mu, initPopulation);
-        std::cout << "Initial population: " << pop << std::endl;
+        // std::cout << "Initial population: " << pop << std::endl;
         EvaluationFunctor eval(opt, evals);
 
         for (unsigned i = 0; i < pop.size(); ++i) {
@@ -314,9 +318,11 @@ public:
 
         Breed breed(eval, bounds, initialStdevs, 1, 2);
         // eoG3Replacement<Candidate> comma(pop.size());
+        double leastSquaresGoal = stdev * stdev * s.frequencies.size();
+        int maxGen = maxfev/20;
         Replacement<Candidate> comma;
         eoGenContinue<Candidate> gen(maxGen);
-        eoFitContinue<Candidate> fit(tolerance); // TODO find good terminating condition
+        eoFitContinue<Candidate> fit(leastSquaresGoal);
         eoCheckPoint<Candidate> checkpoint(gen);
         checkpoint.add(fit);
         RememberBest<Candidate> stat;
@@ -341,7 +347,14 @@ public:
         Candidate best = stat.bestSoFar();
         opt.optimize(best, 200);
         std::cout << best << std::endl;
-        std::cout << "Best Fitness achieved = " << best.fitness() << std::endl;
+        // std::cout << "Result for " << N << " peak model:"    << std::endl;
+        std::cout << "Specified stdev      = " << stdev      << std::endl;
+        std::cout << "Final stdev achieved = " << s.computeStandardDeviation() << std::endl;
         std::cout << "Function evaluations = " << evals.value() << std::endl;
+        if(!gen(pop)) {
+            std::cout << "Max generations reached!" << std::endl;
+            return MAX_EVAL;
+        }
+        return SUCCESS;
     }
 };
