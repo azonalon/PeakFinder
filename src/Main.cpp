@@ -5,7 +5,7 @@
 int main(int argc, char** argv) {
     std::ofstream ofResults("Testing/mainResults.dat");
     std::ofstream ofErrors("Testing/mainResultErrors.dat");
-    auto m = readMatrix("Testing/randomSpectrum.dat");
+    auto m = readMatrix("Testing/qwSpectra.dat");
     auto f = m.col(0);
     for(int i=1; i< m.cols(); i++) {
         auto v = m.col(i);
