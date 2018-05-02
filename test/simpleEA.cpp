@@ -27,7 +27,7 @@ int testRandomSpectrum(int N, std::default_random_engine g)
     std::cout << "Standard deviation error: " << stdev << std::endl;
     auto optimalParameters = s.getPeaksAscending<Eigen::VectorXd>();
     SpectrumGlobalOptimizer opt;
-    opt.optimize(s, stdev*1.1, 1000);
+    opt.optimize(s, stdev*1.1, 5000, N);
     auto finalParameters = s.getPeaksAscending<Eigen::VectorXd>();
     double finalError = s.computeStandardDeviation();
     std::ofstream resultFile("Testing/fitresult.dat");

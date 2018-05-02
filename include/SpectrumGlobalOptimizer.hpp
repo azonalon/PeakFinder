@@ -156,8 +156,11 @@ class Replacement : public eoReplacement<EOT>
         {
           if (_parents.size() != _offspring.size() || (_offspring.size()%2 != 0))
             throw std::logic_error("Reduce Merge: Sizes invalid, should be equal and multiple of two!\n");
+            reduce(_offspring, _offspring.size()/2);
+            reduce(_parents,   _parents.size()/2);
+            // reduce(_offspring, _offspring.size() - 2);
+            // reduce(_parents,   2);
             merge(_parents, _offspring); // parents untouched, result in offspring
-            reduce(_offspring, _parents.size());
             _parents.swap(_offspring);
         }
     private :
@@ -231,8 +234,9 @@ class SpectrumGlobalOptimizer {
         }
     public:
         Breed(eoEvalFunc<Candidate>& eval, eoRealVectorBounds& bounds,
-                std::vector<double> initialStdevs, int _offspringRatio, int _oneFifthWindow):
-            sigma(initialStdevs[0]), mutate(eval, sigma, bounds, _oneFifthWindow, 0.83),
+                std::vector<double> initialStdevs, int _offspringRatio,
+                int _oneFifthWindow, double updateFactor):
+            sigma(initialStdevs[0]), mutate(eval, sigma, bounds, _oneFifthWindow, updateFactor),
             bounds(bounds), offspringRatio(2*_offspringRatio), eval(eval) {
         }
     };
@@ -260,21 +264,15 @@ public:
     SpectrumGlobalOptimizer():
         evals(0,"Function Evals","Number of Evaluations") {};
 
-    Status optimize(Spectrum& s, double stdev, int maxfev) {
-
+    Status optimize(Spectrum& s, double stdev, int maxfev, int nPeaks) {
         double f1=s.frequencies[0], f2=s.frequencies[s.frequencies.size()-1];
         double fRange = abs(f1-f2);
         double min = s.actualSpectrum.minCoeff(), max = s.actualSpectrum.maxCoeff();
 
+        s.setPeakCount(nPeaks);
         SpectrumLocalOptimizer opt(s);
 
-        // // CONFIGURE CMA-ES SETTINGS
-        // char* tmp = new char[1] {'\0'};
-        // char** x = &tmp;
-        // eoParser parser(0, &tmp);
-        // delete[] tmp;
-
-        int nParameters = s.parameterCount();
+        int nParameters = nPeaks*3 + 1;
         std::vector<double> initialParameters(nParameters);
         std::vector<double> lowerBounds(nParameters);
         std::vector<double> upperBounds(nParameters);
@@ -316,7 +314,7 @@ public:
         	eval(pop[i]);
         }
 
-        Breed breed(eval, bounds, initialStdevs, 1, 2);
+        Breed breed(eval, bounds, initialStdevs, 1, 2, 0.7);
         // eoG3Replacement<Candidate> comma(pop.size());
         double leastSquaresGoal = stdev * stdev * s.frequencies.size();
         int maxGen = maxfev/20;

@@ -83,7 +83,7 @@ public:
 
         double err = s.computePeakError();
         if(err == errTest) {
-            fprintf(stderr, "Status: %d\n", status);
+            // fprintf(stderr, "Status: %d\n", status);
             // throw std::runtime_error("yeah");
             err = 1e33;
         }

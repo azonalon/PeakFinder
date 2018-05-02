@@ -2,7 +2,6 @@
 #include <Eigen/Core>
 #include <Eigen/LU>
 #include <vector>
-#include <utils/eoRNG.h>
 #include <cassert>
 #include <random>
 #include <fstream>
@@ -38,6 +37,11 @@ public:
         center(center), height(height) {
         setInvWidth(invWidth);
     }
+    Peak() :
+        center(0), height(0) {
+        setInvWidth(1);
+    }
+
     inline double computeValueAt(double x) {
         if(type == GAUSSIAN) {
             return abs(height)*exp(-(x-center)*(x-center)*invWidth);
@@ -158,8 +162,14 @@ public:
         }
     }
 
-    Spectrum(Eigen::ArrayXd frequencies, Eigen::ArrayXd spectrum) :
-        frequencies(frequencies), actualSpectrum(spectrum) {}
+    Spectrum(Eigen::ArrayXd frequencies, Eigen::ArrayXd spectrum):
+        frequencies(frequencies), actualSpectrum(spectrum),
+        peaks(std::vector<Peak>(0)), background(0.0){
+
+        }
+    void setPeakCount(int n) {
+        peaks = std::vector<Peak>(n);
+    }
 
     template<class _arrayType>
     _arrayType getPeaks() {
@@ -203,18 +213,42 @@ public:
         }
         this->background = gen[peaks.size()*3];
     }
+    Eigen::MatrixXd computeSpectraForEachPeak() {
+        auto tmpPeaks = peaks;
+        std::sort(tmpPeaks.begin(), tmpPeaks.end(), [](Peak p1, Peak p2) -> bool {
+            return p1.getCenter() > p2.getCenter();
+        });
+        Eigen::MatrixXd m(frequencies.size(), tmpPeaks.size() + 4);
+        Eigen::ArrayXd summed(frequencies.size());
+        summed = 0;
+        m.col(0) = frequencies;
+        m.col(1) = actualSpectrum;
+        m.col(3).setConstant(background);
+        for(int i=4; i < m.cols(); i++) {
+            m.col(i) = tmpPeaks.at(i-4).computeSpectrum(frequencies);
+            summed += m.col(i).array();
+        }
+        summed += background;
+        m.col(2) = summed;
+        return m;
+    }
 };
 
-void dumpSpectrum(const Spectrum& s, std::ofstream* of) {
-    for(int i=0; i < s.actualSpectrum.size(); i++) {
-        *of << s.frequencies[i] << " " << s.actualSpectrum[i] << " "
-            << s.background << " ";
-        double y=s.background;
-        for(Peak p: s.peaks) {
-            double v = p.computeValueAt(s.frequencies[i]);
-            y += v;
-            *of << v + s.background << " ";
-        }
-        *of << y << std::endl;
-    }
+void dumpSpectrum(Spectrum& s, std::ofstream* of) {
+    // std::vector<Peak> peaks = s.peaks;
+    // std::sort(peaks.begin(), peaks.end(), [](Peak p1, Peak p2) -> bool {
+    //     return p1.getCenter() > p2.getCenter();
+    // });
+    // for(int i=0; i < s.actualSpectrum.size(); i++) {
+    //     *of << s.frequencies[i] << " " << s.actualSpectrum[i] << " "
+    //         << s.background << " ";
+    //     double y=s.background;
+    //     for(Peak p: peaks) {
+    //         double v = p.computeValueAt(s.frequencies[i]);
+    //         y += v;
+    //         *of << v + s.background << " ";
+    //     }
+    //     *of << y << std::endl;
+    // }
+    *of << s.computeSpectraForEachPeak() << std::endl;
 }

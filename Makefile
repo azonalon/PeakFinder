@@ -133,44 +133,44 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named simpleEA
+# Target rules for targets named Main
 
 # Build rule for target.
-simpleEA: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 simpleEA
-.PHONY : simpleEA
+Main: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 Main
+.PHONY : Main
 
 # fast build rule for target.
-simpleEA/fast:
-	$(MAKE) -f CMakeFiles/simpleEA.dir/build.make CMakeFiles/simpleEA.dir/build
-.PHONY : simpleEA/fast
+Main/fast:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/build
+.PHONY : Main/fast
 
-test/simpleEA.o: test/simpleEA.cpp.o
+src/Main.o: src/Main.cpp.o
 
-.PHONY : test/simpleEA.o
+.PHONY : src/Main.o
 
 # target to build an object file
-test/simpleEA.cpp.o:
-	$(MAKE) -f CMakeFiles/simpleEA.dir/build.make CMakeFiles/simpleEA.dir/test/simpleEA.cpp.o
-.PHONY : test/simpleEA.cpp.o
+src/Main.cpp.o:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/src/Main.cpp.o
+.PHONY : src/Main.cpp.o
 
-test/simpleEA.i: test/simpleEA.cpp.i
+src/Main.i: src/Main.cpp.i
 
-.PHONY : test/simpleEA.i
+.PHONY : src/Main.i
 
 # target to preprocess a source file
-test/simpleEA.cpp.i:
-	$(MAKE) -f CMakeFiles/simpleEA.dir/build.make CMakeFiles/simpleEA.dir/test/simpleEA.cpp.i
-.PHONY : test/simpleEA.cpp.i
+src/Main.cpp.i:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/src/Main.cpp.i
+.PHONY : src/Main.cpp.i
 
-test/simpleEA.s: test/simpleEA.cpp.s
+src/Main.s: src/Main.cpp.s
 
-.PHONY : test/simpleEA.s
+.PHONY : src/Main.s
 
 # target to generate assembly for a file
-test/simpleEA.cpp.s:
-	$(MAKE) -f CMakeFiles/simpleEA.dir/build.make CMakeFiles/simpleEA.dir/test/simpleEA.cpp.s
-.PHONY : test/simpleEA.cpp.s
+src/Main.cpp.s:
+	$(MAKE) -f CMakeFiles/Main.dir/build.make CMakeFiles/Main.dir/src/Main.cpp.s
+.PHONY : src/Main.cpp.s
 
 # Help Target
 help:
@@ -180,12 +180,12 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... Main"
 	@echo "... package_source"
-	@echo "... simpleEA"
 	@echo "... package"
-	@echo "... test/simpleEA.o"
-	@echo "... test/simpleEA.i"
-	@echo "... test/simpleEA.s"
+	@echo "... src/Main.o"
+	@echo "... src/Main.i"
+	@echo "... src/Main.s"
 .PHONY : help
 
 
